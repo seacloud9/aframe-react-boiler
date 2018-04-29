@@ -5,16 +5,19 @@ const path = require('path')
 const webpack =  require('webpack')
 var WebpackStrip = require('webpack-strip')
 const WebpackAssetsManifest = require('webpack-assets-manifest')
-
+//const ENV = require('./env').default
 
 
 module.exports = {
+    mode: 'development', 
     context: __dirname + '/src',
 
     plugins: [
+        /*
         new webpack.DefinePlugin({
-            'process.env.NODE_ENV': JSON.stringify('development')
+            'process.env': ENV
         }),
+        */
         new WebpackAssetsManifest({
             output: '../public/asset-manifest.json',
             merge: true
@@ -23,7 +26,6 @@ module.exports = {
 
     entry: {
         javascript: './index.js'
-       // html: '../public/index.html'
     },
 
     output: {
@@ -36,37 +38,30 @@ module.exports = {
     },
 
     resolve: {
-        extensions: ['.js', '.jsx', '.json'],
+        extensions: ['.js', '.jsx'],
         modules: [
             path.join(__dirname, "/src/"),
             "node_modules"
         ]
-        /*alias: {
-            //Narrator1: path.resolve('./src/story/narrator1.js'),
-            Story1: path.resolve('./src/story/story1.js')
-        }*/
+
     },
 
     module: {
         rules: [{
             test: /\.js$/,
+            exclude: /node_modules/,
             use: [{
               loader: 'babel-loader',
                 options: {
-                    presets: ["es2015", "react", "stage-2"]
+                    presets: ["es2015", "stage-2", "stage-3", "react"],
+                    plugins: ["babel-plugin-transform-object-rest-spread", "babel-plugin-transform-class-properties"]
                 },
             }],
-            exclude: /node_modules/
         }, {
             test: /\.js$/,
             use: ['react-hot-loader/webpack'],
             include: path.resolve(__dirname, './src/')
-      },
-      {
-        test: require.resolve('latest-createjs'),
-        loader: 'imports-loader?this=>window!exports-loader?window.createjs'
       }
     ],
-
     }
 }

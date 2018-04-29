@@ -37,7 +37,7 @@ window.AFRAME.registerComponent('clouds', {
     width: {default: 512},
     height: {default: 512}
   },
-  buildClouds: function(scene){
+  buildClouds: function (scene) {
     let object = this.el.object3D
     var loader = new window.THREE.TextureLoader()
     var texture = loader.load('/images/cloud10.png', scene.render)
@@ -82,19 +82,17 @@ window.AFRAME.registerComponent('clouds', {
     this.data.activeCamera = this.el.sceneEl.camera
   },
   tick: function () {
-    
     function round (n) {
       if (!n) {
         return 0
       }
       return Math.floor(n * 100) / 100
     }
-    if(this.data.activeCamera){
+    if (this.data.activeCamera) {
       let position = ((Date.now() - this.data.start_time) * 0.03) % this.data.totalClouds
       this.data.activeCamera.position.x += (this.data.activeCamera.position.x) * 0.01
       this.data.activeCamera.position.y += (this.data.activeCamera.position.y) * 0.01
       this.data.activeCamera.position.z = -position + this.data.totalClouds
     }
-    
   }
 })
